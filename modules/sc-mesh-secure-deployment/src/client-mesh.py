@@ -186,9 +186,15 @@ def create_config_ubuntu(response):
     if conf['mesh_service']:
         mesh_interface = get_interface(conf['mesh_inf'])
         if res['type'] == '11s':
-            subprocess.call('src/bash/conf-11s-mesh.sh ' + mesh_interface, shell=True)
+            if res['routing_protocol'] == 'batman-adv':
+                subprocess.call('src/bash/conf-11s-mesh.sh ' + mesh_interface, shell=True)
+            elif res['routing_protocol'] == 'olsr':
+                subprocess.call('src/bash/conf-11s-olsr-mesh.sh ' + mesh_interface, shell=True)
         if res['type'] == 'ibss':
-            subprocess.call('src/bash/conf-mesh.sh ' + mesh_interface, shell=True)
+            if res['routing_protocol'] == 'batman-adv':
+                subprocess.call('src/bash/conf-mesh.sh ' + mesh_interface, shell=True)
+            elif res['routing_protocol'] == 'olsr':
+                subprocess.call('src/bash/conf-olsr-mesh.sh ' + mesh_interface, shell=True)
 
 
 if __name__ == "__main__":
